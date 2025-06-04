@@ -218,20 +218,14 @@
     }
   },
 
-       async fetchUserGroups() {
+  async fetchUserGroups() {
        try {
-        const token = localStorage.getItem('jsontoken');
-    if (!token) {
-      this.$router.push('/login');
-      return;
-    }
-
-    const response = await axios.get(`/api/grp_expenses/my-groups`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      timeout: 30000
-    });
+         const response = await this.$axios.get('/api/grp_expenses/my-groups', {
+           headers: {
+             Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
+           },
+           timeout: 30000
+         });
  
          if (response.data.success) {
            this.userGroups = response.data.data;
@@ -248,17 +242,14 @@
           }
         }
       } catch (err) {
-    if (err.response?.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('jsontoken');
-      localStorage.removeItem('user');
-      this.$router.push('/login');
-    } else {
-      console.error('Error fetching groups:', err);
-      this.error = "Failed to load groups. Please try again later.";
-    }
-  }
-},
+        if (err.code === 'ECONNABORTED') {
+          this.error = "Request timed out. Please try again.";
+        } else {
+          this.error = "Failed to load groups. Please refresh the page.";
+        }
+        console.error('Error:', err);
+      }
+    },
            
      goBackToGroup() {
       this.preventAutoRedirect = false;
