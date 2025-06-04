@@ -2,7 +2,10 @@ import axios from 'axios';
 
 // Configure base URL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL, // e.g., https://backend-qs65.onrender.com
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Request interceptor to attach the token

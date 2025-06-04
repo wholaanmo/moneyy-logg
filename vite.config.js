@@ -5,9 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
-  // Dynamic base URL for dev/prod
-  base: process.env.NODE_ENV === 'production' ? '/VUE-APP/' : '/',
-  
+  base: '/moneyy-logg/',
   plugins: [
     vue(),
     vueDevTools(),

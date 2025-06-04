@@ -235,6 +235,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { mapGetters, mapActions } from 'vuex';
+import axios from 'axios';
 
 ChartJS.register(
   Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, 
@@ -525,7 +526,7 @@ offset: function(context) {
     const groupId = this.$store.state.group.currentGroup.id;
     
     // Fetch all contributions (both completed and pending)
-    const contributionsRes = await this.$axios.get(
+    const contributionsRes = await axios.get(
       `/api/grp_expenses/groups/${groupId}/contributions`, 
       {
         headers: {
@@ -619,7 +620,7 @@ offset: function(context) {
 
     async fetchGroupMembers(groupId) {
     try {
-      const response = await this.$axios.get(`/api/grp_expenses/${groupId}/members`, {
+      const response = await axios.get(`/api/grp_expenses/${groupId}/members`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
         }
@@ -637,7 +638,7 @@ offset: function(context) {
       this.userGroupsLoading = true;
       this.userGroupsError = null;
       try {
-        const response = await this.$axios.get('/api/grp_expenses/my-groups', {
+        const response = await axios.get(`/api/grp_expenses/my-groups`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
           }
@@ -668,7 +669,7 @@ offset: function(context) {
 
     this.memberFilterLoading = true;
     try {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/${this.$store.state.group.currentGroup.id}/expenses/member/${this.selectedMember}`,
         {
           headers: {
@@ -1724,6 +1725,9 @@ button:hover {
 }
 
 @media (max-width: 480px) {
+  h1 {
+    font-size: 37px;
+  }
   .nav-con{
     text-align: center;
   }
@@ -1739,8 +1743,18 @@ button:hover {
     width: 100%;
   }
   .expense-table th, .expense-table td {
-    font-size: 10px;
-    padding: 7px;
+    font-size: 11px;
+    padding: 7px 1px;
+  }
+  .show-groups-button {
+   margin-left: 20px;
+  }
+  button, p {
+    font-size: 15px;
+    margin: 15px;
+  }
+  .filter-buttons button {
+    font-size: 14px;
   }
 }
 </style>

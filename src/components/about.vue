@@ -247,43 +247,31 @@ body {
 </style>
 
 <style scoped>
-.navbar-logo {
-  margin-left: -20px; /* Reduce left margin */
-  margin-right: auto;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-.logo-image {
-  height: 70px;
-  width: auto;
-  object-fit: contain;
-}
 .navbar {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   width: 100%;
   height: 70px;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Center the navbar content */
+  left: 0;
+  right: 0;
   transition: all 0.3s ease;
 }
 
 .navbar-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center the nav items */
   align-items: center;
-  padding: 0 2rem;
-  width: 100%;
+  padding: 1rem 2rem;
   max-width: 1200px;
+  width: 100%;
 }
 
 .nav-menu {
@@ -292,7 +280,8 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-left: 1.5rem;
+  justify-content: center; /* Center the menu items */
+  width: 100%;
 }
 
 .nav-item {
@@ -300,30 +289,29 @@ body {
 }
 
 .nav-link {
-  position: relative;
   color: #2d3748;
   text-decoration: none;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
   padding: 0.5rem 0;
-  letter-spacing: 0.3px;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
-  width: 0%;
+  width: 0;
   height: 2px;
   background: linear-gradient(to right, #4CB5AB, #88C9BF);
   transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #4CB5AB;
-  transform: translateY(-2px);
+  color: 	#4CB5AB;
 }
 
 .nav-link:hover::after {
@@ -331,7 +319,7 @@ body {
 }
 
 .nav-link.active {
-  color: #4CB5AB;
+  color: 	#4CB5AB;
   font-weight: 600;
 }
 
@@ -713,7 +701,7 @@ body {
   max-height: 240px; /* Smaller fixed height */
   display: flex;
   flex-direction: column;
-  margin-top: 13px;
+  margin-top: 20px;
 }
 
 .feature-card:hover {
@@ -1156,6 +1144,9 @@ h2 {
   }
   .logo{
     margin-top: 30px;
+  }
+  .nav-link {
+  font-size: 12px;
   }
 }
 </style>

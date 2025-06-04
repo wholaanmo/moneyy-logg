@@ -497,7 +497,8 @@
  <script>
  import Navigation from "./navigation.vue";
  import { mapState, mapGetters, mapActions } from 'vuex'
- 
+ import axios from 'axios';
+
  export default {
    name: 'Personal',
    components: { Navigation },
@@ -1267,7 +1268,7 @@ beforeUnmount() {
       formData.append('photo', this.editPhotoFile);
     }
 
-    const response = await this.$axios.put(
+    const response = await axios.put(
       `/api/photos/${this.editingPhoto.id}`,
       formData,
       {
@@ -1320,7 +1321,7 @@ async fetchPhotos() {
   this.photosLoading = true;
   this.photosError = null;
   try {
-    const response = await this.$axios.get(
+    const response = await axios.get(
       `/api/photos`,
       {
         headers: {
@@ -1390,7 +1391,7 @@ handleFileSelect(event) {
     formData.append('photo', this.newPhoto.file);
     formData.append('description', this.newPhoto.description);
     
-    const response = await this.$axios.post(
+    const response = await axios.post(
       `/api/photos`,
       formData,
       {
@@ -1493,7 +1494,7 @@ confirmDeletePhoto(photo) {
     
 async deletePhoto(photoId) {
   try {
-    const response = await this.$axios.delete(`/api/photos/${photoId}`, {
+    const response = await axios.delete(`/api/photos/${photoId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
       }
@@ -1587,7 +1588,7 @@ async deletePhoto(photoId) {
 
     console.log('Attempting to send learning data:', payload);
       
-    const response = await this.$axios.post('/api/predictions/learn', payload, {
+    const response = await axios.post(`/api/predictions/learn`, payload, {
       headers: { 
         Authorization: `Bearer ${localStorage.getItem('jsontoken')}`,
         'Content-Type': 'application/json'
@@ -1621,7 +1622,7 @@ async predictCategory() {
   try {
     this.isPredicting = true;
     
-    const response = await this.$axios.post('/api/predictions/predict', {
+    const response = await axios.post(`/api/predictions/predict`, {
       item_name: this.itemName.trim() // Add trim() to clean input
     }, {
       headers: { 
@@ -1705,7 +1706,7 @@ async submitPredictionFeedback(isCorrect) {
     };
 
     // For both correct and incorrect cases
-    await this.$axios.post('/api/predictions/learn', payload, {
+    await axios.post(`/api/predictions/learn`, payload, {
       headers: { 
         Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
       }
@@ -3997,7 +3998,6 @@ th, td {
 th {
   background: linear-gradient(135deg, #6fcfa5, #3ea799);
   font-weight: 700;
-  font-size: 1rem; 
   padding: 12px 20px; 
   color: white;
   text-transform: uppercase;
@@ -4266,13 +4266,15 @@ select[disabled] {
 @media (max-width: 760px) {
   .top-row {
     flex-wrap: wrap;
+    width: 95%;
   }
   .month-selector span{
     min-width: 100px;
     padding: 0px;
   }
   .expenses-container {
-    min-width: 300px;
+    min-width: 250px;
+    width: 95%;
   }
   .expense-photo-tabs {
     justify-content: space-between;
@@ -4283,6 +4285,12 @@ select[disabled] {
   }
   .budget-form {
     width: 80%;
+  }
+  .photos-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  th {
+  font-size: 12px; 
   }
 }
 

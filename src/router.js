@@ -55,7 +55,6 @@ const routes = [
       const token = localStorage.getItem('jsontoken');
       const user = JSON.parse(localStorage.getItem('user'));
       
-      // Always check authentication first
       if (!token || !user) {
         next('/login');
         return;
@@ -67,20 +66,26 @@ const routes = [
         return;
       }
       
-      // Check if user has groups
-      const response = await axios.get('/api/grp_expenses/my-groups', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      // If user has exactly one group and not coming from Group page, redirect
-      if (response.data?.data?.length === 1 && from.name !== 'Group') {
-        next({ name: 'Group', params: { groupId: response.data.data[0].id } });
-      } else {
-        next();
+      // Try to fetch groups
+      try {
+        const response = await axios.get('/api/grp_expenses/my-groups', {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 5000
+        });
+        
+        if (response.data?.success && response.data.data?.length === 1 && from.name !== 'Group') {
+          next({ name: 'Group', params: { groupId: response.data.data[0].id } });
+          return;
+        }
+      } catch (err) {
+        console.warn('Failed to fetch groups in route guard, continuing anyway', err);
+        // Continue to GC page even if fetch fails
       }
+      
+      next();
     } catch (err) {
       console.error('Route guard error:', err);
-      next(); // Still allow access to GC page even if fetch fails
+      next('/login'); // Fallback to login on critical errors
     }
   }
 },

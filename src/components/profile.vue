@@ -582,7 +582,7 @@ updateExpenseView() {
         console.log('Token being sent:', token);
 
         const response = await this.$axios.delete(
-    'http://localhost:3000/api/users',
+          `/api/users`,
     {
         headers: { 
             Authorization: `Bearer ${token}` 
@@ -639,7 +639,7 @@ updateExpenseView() {
       try {
         const token = localStorage.getItem('jsontoken');
         const groupListResponse = await this.$axios.get(
-          'http://localhost:3000/api/grp_expenses/my-groups',
+          `/api/grp_expenses/my-groups`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -734,7 +734,7 @@ updateExpenseView() {
     performLogout() {
     const token = localStorage.getItem('jsontoken');
     
-    this.$axios.post('http://localhost:3000/api/users/logout', {}, {
+    this.$axios.post(`/api/users/logout`, {}, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {
@@ -1154,7 +1154,7 @@ updateExpenseView() {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
 }
   
@@ -1210,7 +1210,8 @@ updateExpenseView() {
   .info strong {
   font-style: normal;
   color: #26665e;
-  font-size: 18px;
+  font-size: 16px;
+  word-break: break-word;
 }
 
 .infos {
@@ -1477,7 +1478,7 @@ updateExpenseView() {
     }
 
     .profile-container {
-      margin: 70px 10px 20px 20px;
+      margin: 70px 20px 20px 20px;
     }
   
     .profile-container p {

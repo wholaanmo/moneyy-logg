@@ -84,7 +84,7 @@ export default {
     performLogout() {
       const token = localStorage.getItem('jsontoken');
       
-      this.$axios.post('http://localhost:3000/api/users/logout', {}, {
+      this.$axios.post(`/api/users/logout`, {}, {
           headers: { Authorization: `Bearer ${token}` }
       })
       .then(() => {

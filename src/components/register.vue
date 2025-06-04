@@ -396,7 +396,7 @@ if (strengthScore.value < 4) { // Changed from <3 to <=2
 }
   
 try {
-  const checkRes = await axios.post('http://localhost:3000/api/users/check-email', {
+  const checkRes = await axios.post(`/api/users/check-email`, {
     email: email.value
   });
 
@@ -407,7 +407,7 @@ try {
   }
 
       // First step: Send registration data to get OTP
-          const res = await axios.post('http://localhost:3000/api/users/send-registration-otp', {
+          const res = await axios.post(`/api/users/send-registration-otp`, {
         first_name: first_name.value,
         last_name: last_name.value,
         username: username.value,
@@ -440,7 +440,7 @@ try {
   const verifyEmail = async () => {
 try {
   const response = await axios.post(
-    'http://localhost:3000/api/users/verify-registration-otp',
+    `/api/users/verify-registration-otp`,
     { 
       otp: otp.value,
       first_name: first_name.value,
@@ -476,7 +476,7 @@ try {
 
 const resendOTP = async () => {
 try {
-  const response = await axios.post('http://localhost:3000/api/users/resend-registration-otp', {
+  const response = await axios.post(`/api/users/resend-registration-otp`, {
     email: email.value,
     first_name: first_name.value, // Add this line
     tempToken: tempToken.value

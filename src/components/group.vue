@@ -1093,6 +1093,7 @@
 <script>
 import Navigation from "./navigation.vue";
 import { mapState, mapActions, mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'Group',
@@ -1452,7 +1453,7 @@ export default {
   if (inviteToken) {
     try {
       await this.handleInviteAcceptance(inviteToken);
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/invite/accept?token=${inviteToken}`,
         {
           headers: {
@@ -1517,7 +1518,7 @@ export default {
 
   try {
     // Verify membership
-    const verifyResponse = await this.$axios.get(
+    const verifyResponse = await axios.get(
       `/api/grp_expenses/${this.localGroupId}/verify-membership`,
       {
         headers: {
@@ -1534,8 +1535,8 @@ export default {
     if (this.groupId) {
       this.isBudgetLoading = true;
       try {
-        const res = await this.$axios.get(
-        `/api/grp_expenses/groups/${this.groupId}/budget`,
+        const res = await axios.get(
+          `/api/grp_expenses/groups/${this.groupId}/budget`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
@@ -2140,7 +2141,7 @@ async fetchPendingRequests() {
   this.pendingRequestsError = null;
   
   try {
-    const response = await this.$axios.get(
+    const response = await axios.get(
       `/api/grp_expenses/${this.localGroupId}/requests`,
       {
         headers: {
@@ -2168,7 +2169,7 @@ async fetchPendingRequests() {
   
   async approveRequest(request) {
   try {
-    const response = await this.$axios.put(
+    const response = await axios.put(
       `/api/grp_expenses/${this.localGroupId}/requests/${request.id}/approve`,
       {},
       {
@@ -2198,7 +2199,7 @@ async fetchPendingRequests() {
   
 async rejectRequest(request) {
   try {
-    const response = await this.$axios.put(
+    const response = await axios.put(
       `/api/grp_expenses/${this.localGroupId}/requests/${request.id}/reject`,
       {},
       {
@@ -2227,8 +2228,8 @@ async rejectRequest(request) {
 
   async joinGroup() {
   try {
-    const response = await this.$axios.post(
-      '/api/grp_expenses/join',
+    const response = await axios.post(
+      `/api/grp_expenses/join`,
       { groupCode: this.groupCodeInput },
       {
         headers: {
@@ -2280,7 +2281,7 @@ async updatePhoto() {
       formData.append('photo', this.editPhotoFile);
     }
     
-    const response = await this.$axios.put(
+    const response = await axios.put(
       `/api/grp_expenses/groups/${this.localGroupId}/photos/${this.editingPhoto.id}`,
       formData,
       {
@@ -2324,7 +2325,7 @@ async fetchPhotos() {
     this.photosLoading = true;
     this.photosError = null;
     try {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/groups/${this.localGroupId}/photos`,
         {
           headers: {
@@ -2392,7 +2393,7 @@ async fetchPhotos() {
     formData.append('description', this.newPhoto.description);
     
     const user = JSON.parse(localStorage.getItem('user'));
-    const response = await this.$axios.post(
+    const response = await axios.post(
       `/api/grp_expenses/groups/${this.localGroupId}/photos`,
       formData,
       {
@@ -2472,7 +2473,7 @@ async fetchPhotos() {
   
   async deletePhoto(photoId) {
     try {
-      await this.$axios.delete(
+      await axios.delete(
         `/api/grp_expenses/groups/${this.localGroupId}/photos/${photoId}`,
         {
           headers: {
@@ -2490,7 +2491,7 @@ async fetchPhotos() {
   
   async fetchBlockedMembers() {
     try {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/groups/${this.localGroupId}/blocked-members`,
         {
           headers: {
@@ -2520,8 +2521,8 @@ async fetchPhotos() {
       try {
         this.blockingMember = true;
         
-        const response = await this.$axios.post(
-        `/api/grp_expenses/groups/${this.localGroupId}/members/${member.id}/block`,
+        const response = await axios.post(
+          `/api/grp_expenses/groups/${this.localGroupId}/members/${member.id}/block`,
         { 
           reason: this.confirmationNote || null 
         },
@@ -2564,7 +2565,7 @@ async fetchPhotos() {
       try {
         this.unblockingMember = true;
         
-        const response = await this.$axios.post(
+        const response = await axios.post(
           `/api/grp_expenses/groups/${this.localGroupId}/members/${member.id}/unblock`,
           {},
           {
@@ -2608,7 +2609,7 @@ async fetchPhotos() {
   if (!inviteToken) return;
   
   try {
-    const response = await this.$axios.get(
+    const response = await axios.get(
       `/api/grp_expenses/invite/accept?token=${inviteToken}`,
       {
         headers: {
@@ -2656,7 +2657,7 @@ async fetchPhotos() {
 
 async verifyMembership() {
   try {
-    const response = await this.$axios.get(
+    const response = await axios.get(
       `/api/grp_expenses/${this.localGroupId}/verify-membership`,
       {
         headers: {
@@ -2682,8 +2683,8 @@ async verifyMembership() {
 async checkPendingInvites() {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      const response = await this.$axios.get(
-        '/api/grp_expenses/pending-invites',
+      const response = await axios.get(
+        `/api/grp_expenses/pending-invites`,
         {
           params: { email: user.email },
           headers: {
@@ -2702,8 +2703,8 @@ async checkPendingInvites() {
   
 async fetchPendingInvites() {
   try {
-    const response = await this.$axios.get(
-      '/api/grp_expenses/pending-invites',
+    const response = await axios.get(
+      `/api/grp_expenses/pending-invites`,
       {
         params: { email: this.user.email },
         headers: {
@@ -2726,7 +2727,7 @@ showInvites() {
 
 async acceptInvite(invite) {
     try {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/invite/accept?token=${invite.token}`,
         {
           headers: {
@@ -2786,7 +2787,7 @@ async updateMemberContributions() {
     userContributions.forEach(async (contribution) => {
       if (contribution.status !== newStatus) {
         try {
-          await this.$axios.put(
+          await axios.put(
             `/api/grp_expenses/groups/${this.localGroupId}/contributions/${contribution.id}/status`,
             { status: newStatus },
             {
@@ -2954,7 +2955,7 @@ async updateContribution() {
   }
 
   try {
-    const response = await this.$axios.put(
+    const response = await axios.put(
       `/api/grp_expenses/groups/${this.localGroupId}/contributions/${this.editingContribution.id}`,
       { amount: this.editingContribution.amount},
       {
@@ -2988,7 +2989,7 @@ async updateContribution() {
   async fetchContributionHistory() {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/groups/${this.localGroupId}/contribution-history`,
         {
           params: { user_id: user.id },
@@ -3009,7 +3010,7 @@ async updateContribution() {
 
   async fetchContributions() {
     try {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `/api/grp_expenses/groups/${this.localGroupId}/contributions`,
         {
           headers: {
@@ -3047,7 +3048,7 @@ async updateContribution() {
     }
       
       const user = JSON.parse(localStorage.getItem('user'));
-      const response = await this.$axios.post(
+      const response = await axios.post(
         `/api/grp_expenses/groups/${this.localGroupId}/contributions`,
         { 
           amount,
@@ -3135,7 +3136,7 @@ async submitAddBudget() {
   async fetchGroupBudget() {
   try {
     this.isBudgetLoading = true;
-    const res = await this.$axios.get(
+    const res = await axios.get(
       `/api/grp_expenses/groups/${this.groupId}/budget`,
       {
         headers: {
@@ -3170,7 +3171,7 @@ async submitAddBudget() {
 async fetchBudgetData() {
   this.isBudgetLoading = true;
   try {
-    const response = await this.$axios.get(
+    const response = await axios.get(
       `/api/grp_expenses/groups/${this.localGroupId}/budget`,
       {
         headers: {
@@ -3284,7 +3285,7 @@ async updateBudget() {
 
     async fetchUserGroups() {
       try {
-        const response = await this.$axios.get('/api/grp_expenses/my-groups', {
+        const response = await this.$axios.get(`/api/grp_expenses/my-groups`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
           }
@@ -3346,7 +3347,7 @@ async updateBudget() {
 
       try {
         // First verify membership and get role/status
-        const membershipResponse = await this.$axios.get(
+        const membershipResponse = await axios.get(
           `/api/grp_expenses/${this.localGroupId}/verify-membership`,
           {
             headers: {
@@ -3686,7 +3687,7 @@ async sendInvite() {
   }
 
   try {
-    const response = await this.$axios.post(
+    const response = await axios.post(
       `/api/grp_expenses/${this.localGroupId}/members/invite`,
       { 
         email: this.inviteEmail 
@@ -3745,7 +3746,7 @@ confirmRemoveMember(member) {
   this.confirmationNote = '';      
   this.confirmAction = async () => {
     try {
-      await this.$axios.post(
+      await axios.post(
         `/api/grp_expenses/${this.localGroupId}/members/${member.id}/remove`,
         { 
           reason: this.confirmationNote || null 
@@ -3871,7 +3872,7 @@ beforeRouteEnter(to, from, next) {
     const inviteToken = to.query.inviteToken;
     if (inviteToken) {
       try {
-        const response = await vm.$axios.get(
+        const response = await axios.get(
           `/api/grp_expenses/invite/accept?token=${inviteToken}`,
           {
             headers: {
@@ -7280,6 +7281,26 @@ button.cancel-button{
     flex-wrap: wrap;
     margin-top: 10px;
     gap: 5px;
+  }
+}
+@media (max-width: 480px) {
+  .group-tabs button {
+    margin-right: 40px;
+  }
+  .group-tabs {
+    gap: 20px;
+  }
+  .photos-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+   .expenses-table th {
+  font-size: 12px; 
+  }
+  .expenses-container h3{
+    font-size: 19px;
+  }
+  .member-contributions-table th {
+    font-size: 12px;
   }
 }
 </style>

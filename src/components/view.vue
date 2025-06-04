@@ -1227,27 +1227,22 @@ button:hover {
 }
 
 .download-button {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px 20px;
-  font-size: 16px;
-  background: linear-gradient(135deg, #67c29a, #359588);
-  color: white;
-  border: none;
-  cursor: pointer;
-  align-self: center;
-  margin: 5px 0 5px 3px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  transition: all 0.3s ease;
+display: flex;
+flex-wrap: wrap;
+padding: 10px 20px;
+font-size: 16px;
+background: linear-gradient(135deg, #67c29a, #359588);
+color: white;
+border: none;
+cursor: pointer;
+align-self: center;
+margin-bottom: 8px;
+margin-left: 3px;
 }
 
 .download-button:hover {
-  background: linear-gradient(135deg, #359588, #2a7267);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+background-color: #1e3731;
 }
-
 
 @media (max-width: 1135px) {
 .chart-summary {
@@ -1273,13 +1268,20 @@ button:hover {
   .chart-summary{
     width: 85%;
     margin-left: 0;
+    margin-bottom: 20px;
   }
   .chart{
     width: 100%;
   }
   .expense-table th, .expense-table td {
     font-size: 11px;
-    padding: 7px;
+    padding: 7px 1px;
+  }
+  .month-buttons[data-v-de7da166] {
+    gap: 2px;
+  }
+  .filter-buttons button {
+    font-size: 14px;
   }
 }
 </style> 

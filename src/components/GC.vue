@@ -124,6 +124,7 @@
 
   <script>
   import Navigation from "./navigation.vue"; 
+  import axios from 'axios';
   
   export default {
     name: 'GC',
@@ -161,7 +162,7 @@
     },
       async fetchNotifications() {
         try {
-          const response = await this.$axios.get('/api/grp_expenses/user-notifications', {
+          const response = await axios.get(`/api/grp_expenses/user-notifications`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
             }
@@ -206,7 +207,7 @@
   async dismissNotification(index) {
     const notification = this.notifications[index];
     try {
-      await this.$axios.delete(`/api/grp_expenses/notifications/${notification.id}`, {
+      await axios.delete(`/api/grp_expenses/notifications/${notification.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
         }
@@ -219,12 +220,18 @@
 
        async fetchUserGroups() {
        try {
-         const response = await this.$axios.get('/api/grp_expenses/my-groups', {
-           headers: {
-             Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
-           },
-           timeout: 30000
-         });
+        const token = localStorage.getItem('jsontoken');
+    if (!token) {
+      this.$router.push('/login');
+      return;
+    }
+
+    const response = await axios.get(`/api/grp_expenses/my-groups`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      timeout: 30000
+    });
  
          if (response.data.success) {
            this.userGroups = response.data.data;
@@ -241,14 +248,17 @@
           }
         }
       } catch (err) {
-        if (err.code === 'ECONNABORTED') {
-          this.error = "Request timed out. Please try again.";
-        } else {
-          this.error = "Failed to load groups. Please refresh the page.";
-        }
-        console.error('Error:', err);
-      }
-    },
+    if (err.response?.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem('jsontoken');
+      localStorage.removeItem('user');
+      this.$router.push('/login');
+    } else {
+      console.error('Error fetching groups:', err);
+      this.error = "Failed to load groups. Please try again later.";
+    }
+  }
+},
            
      goBackToGroup() {
       this.preventAutoRedirect = false;
@@ -309,7 +319,7 @@
        return;
      }
  
-          const response = await this.$axios.post('/api/grp_expenses/create', {
+          const response = await axios.post(`/api/grp_expenses/create`, {
            name: this.groupName.trim()
      }, {
        headers: {
@@ -348,7 +358,7 @@
            this.isLoading = true;
            this.error = '';
 
-           const blockedCheck = await this.$axios.get(
+           const blockedCheck = await axios.get(
       `/api/grp_expenses/groups/check-blocked/${this.groupCodeInput}`,
       {
         headers: {
@@ -366,8 +376,8 @@
       return;
     }
  
-           const response = await this.$axios.post(
-       '/api/grp_expenses/join',
+           const response = await axios.post(
+            `/api/grp_expenses/join`,
        {
          groupCode: this.groupCodeInput.toUpperCase()
        },
@@ -421,7 +431,7 @@
       if ((from.path === '/' || from.path === '/login') && 
           !to.query.fromGroup) {
         try {
-          const response = await vm.$axios.get('/api/grp_expenses/my-groups');
+          const response = await axios.get(`/api/grp_expenses/my-groups`);
           if (response.data?.success && 
               response.data.data?.length === 1 && 
               to.path === '/GC') {
