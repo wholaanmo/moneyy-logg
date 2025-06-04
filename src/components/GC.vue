@@ -220,7 +220,7 @@
 
   async fetchUserGroups() {
        try {
-         const response = await this.$axios.get('/api/grp_expenses/my-groups', {
+         const response = await axios.get('/api/grp_expenses/my-groups', {
            headers: {
              Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
            },
@@ -417,24 +417,29 @@
 }
      },
 
- beforeRouteEnter(to, from, next) {
-    next(async vm => {
-      if ((from.path === '/' || from.path === '/login') && 
-          !to.query.fromGroup) {
-        try {
-          const response = await axios.get(`/api/grp_expenses/my-groups`);
-          if (response.data?.success && 
-              response.data.data?.length === 1 && 
-              to.path === '/GC') {
-            vm.navigateToGroup(response.data.data[0].id);
+beforeRouteEnter(to, from, next) {
+  next(async vm => {
+    if ((from.path === '/' || from.path === '/login') && 
+        !to.query.fromGroup) {
+      try {
+        const token = localStorage.getItem('jsontoken');
+        const response = await axios.get(`/api/grp_expenses/my-groups`, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        } catch (err) {
-          console.error('Error fetching groups:', err);
+        });
+        if (response.data?.success && 
+            response.data.data?.length === 1 && 
+            to.path === '/GC') {
+          vm.navigateToGroup(response.data.data[0].id);
         }
+      } catch (err) {
+        console.error('Error fetching groups:', err);
       }
-    });
-  }
-};
+    }
+  });
+}
+  };
    </script>
    
    <style scoped>
