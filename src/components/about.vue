@@ -6,7 +6,7 @@
       <div class="navbar-container">
 
         <a href="#" class="navbar-logo">
-      <img src="/LOGO.png" alt="Logo" class="logo-image" />
+          <img src="./LOGO.png" alt="Logo" class="logo-image" />
     </a>
 
         <ul class="nav-menu">
@@ -246,6 +246,11 @@ body {
 </style>
 
 <style scoped>
+.logo-image {
+  height: 40px;
+  width: auto;
+}
+
 .navbar {
   position: fixed;
   top: 0;
