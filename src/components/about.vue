@@ -4,11 +4,6 @@
      <!-- Navbar -->
      <nav class="navbar">
       <div class="navbar-container">
-
-        <a href="#" class="navbar-logo">
-          <img src="./LOGO.png" alt="Logo" class="logo-image" />
-    </a>
-
         <ul class="nav-menu">
           <li class="nav-item">
             <a href="#" @click.prevent="scrollTo('container')" class="nav-link">Home</a>
@@ -233,6 +228,7 @@ export default {
 };
 </script>
 
+
 <style>
 body {
   font-family: 'Poppins', sans-serif;
@@ -246,11 +242,6 @@ body {
 </style>
 
 <style scoped>
-.logo-image {
-  height: 40px;
-  width: auto;
-}
-
 .navbar {
   position: fixed;
   top: 0;
@@ -1124,6 +1115,20 @@ h2 {
     height: 100%;
     top: 0;
     left: 0;
+  }
+  .content {
+    width: 80%;
+  }
+  .personal-container,
+  .group-container {
+    width: 80%;
+    margin-left: 10px;
+  }
+  .register-card {
+    padding: 15px;
+  }
+  .logo{
+    margin-top: 30px;
   }
 }
 </style>
