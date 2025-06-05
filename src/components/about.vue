@@ -4,6 +4,11 @@
      <!-- Navbar -->
      <nav class="navbar">
       <div class="navbar-container">
+
+        <a href="#" class="navbar-logo">
+      <img src="/LOGO.png" alt="Logo" class="logo-image" />
+    </a>
+
         <ul class="nav-menu">
           <li class="nav-item">
             <a href="#" @click.prevent="scrollTo('container')" class="nav-link">Home</a>
@@ -228,18 +233,6 @@ export default {
 };
 </script>
 
-
-<style>
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  background-color: rgb(250, 254, 255);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-</style>
 
 <style scoped>
 .navbar {
