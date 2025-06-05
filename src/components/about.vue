@@ -233,6 +233,17 @@ export default {
 };
 </script>
 
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: rgb(250, 254, 255);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+</style>
 
 <style scoped>
 .navbar {
@@ -1108,6 +1119,10 @@ h2 {
     height: 100%;
     top: 0;
     left: 0;
+  }
+  .logo-image {
+    width: 70px;
+    height: auto;
   }
 }
 </style>
