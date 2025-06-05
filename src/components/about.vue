@@ -255,7 +255,7 @@ body {
   text-decoration: none;
 }
 .logo-image {
-  height: 70px;
+  height: 30px;
   width: auto;
   object-fit: contain;
 }
