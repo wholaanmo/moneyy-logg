@@ -3010,25 +3010,47 @@ async updateContribution() {
 
   async fetchContributions() {
     try {
+      console.log(`Fetching contributions for group ${this.localGroupId}`);
+
       const response = await axios.get(
         `/api/grp_expenses/groups/${this.localGroupId}/contributions`,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
-          }
+                headers: {
+          Authorization: `Bearer ${localStorage.getItem('jsontoken')}`
+        },
+        params: {
+          _t: Date.now() // Cache buster
         }
-      );
-      
-      if (response.data.success) {
-        this.contributions = response.data.contributions || [];
-      console.log('Fetched contributions:', this.contributions);
-        this.updateMemberContributions();
       }
-    } catch (error) {
-      console.error('Failed to fetch contributions:', error);
-      this.showError('Failed to load contributions');
+    );
+    
+    if (response.data?.success) {
+      console.log('Contributions data:', response.data.contributions);
+      this.contributions = response.data.contributions || [];
+      this.updateMemberContributions();
+    } else {
+      console.error('Unexpected response format:', response.data);
+      this.showError('Unexpected response from server');
     }
-  },
+  } catch (error) {
+    console.error('Failed to fetch contributions:', {
+      error: error,
+      response: error.response?.data
+    });
+    
+    let errorMsg = 'Failed to load contributions';
+    if (error.response) {
+      if (error.response.status === 401) {
+        errorMsg = 'Session expired - please login again';
+        this.$router.push('/login');
+      } else if (error.response.data?.message) {
+        errorMsg = error.response.data.message;
+      }
+    }
+    
+    this.showError(errorMsg);
+  }
+},
 
   async saveContribution() {
     if (this.paidAmountLoading) return;
